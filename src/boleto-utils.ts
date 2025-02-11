@@ -123,25 +123,23 @@ export const identificarReferencia = (
   }
 };
 
-/**
- * Identifica o fator da data de vencimento do boleto
- */
-export const identificarData = (
-  codigo: string,
+type obtemFatorDataParams = {
+  codigo: string
   tipoCodigo: TipoCodigo
-): Date => {
-  codigo = codigo.replace(/[^0-9]/g, "");
-  const tipoBoleto = identificarTipoBoleto(codigo);
+}
+
+export const obtemFatorData = ({  codigo, tipoCodigo }: obtemFatorDataParams) => {
+  const codigoLimpo = codigo.replace(/[^0-9]/g, "");
+  const tipoBoleto = identificarTipoBoleto(codigoLimpo);
 
   let fatorData = "";
-  let dataBoleto = moment.tz("1997-10-07 20:54:59.000Z", "UTC");
 
   if (tipoCodigo === TipoCodigo.CODIGO_DE_BARRAS) {
     if (
       tipoBoleto == TipoBoleto.BANCO ||
       tipoBoleto == TipoBoleto.CARTAO_DE_CREDITO
     ) {
-      fatorData = codigo.substr(5, 4);
+      fatorData = codigoLimpo.substr(5, 4);
     } else {
       fatorData = "0";
     }
@@ -150,16 +148,45 @@ export const identificarData = (
       tipoBoleto == TipoBoleto.BANCO ||
       tipoBoleto == TipoBoleto.CARTAO_DE_CREDITO
     ) {
-      fatorData = codigo.substr(33, 4);
+      fatorData = codigoLimpo.substr(33, 4);
     } else {
       fatorData = "0";
     }
   }
 
+  return fatorData
+}
+
+/**
+ * Identifica o fator da data de vencimento do boleto
+ */
+export const identificarData = (
+  codigo: string,
+  tipoCodigo: TipoCodigo
+): Date => {
+  const fatorData = obtemFatorData({ codigo, tipoCodigo });
+  const dataBoleto = moment.tz("1997-10-07 20:54:59.000Z", "UTC");
+
   dataBoleto.add(Number(fatorData), "days");
 
   return dataBoleto.toDate();
 };
+
+/**
+ * Identifica o fator da data de vencimento do boleto após 22/02/2025
+ */
+export const identificarDataApos22022025 = (
+  codigo: string,
+  tipoCodigo: TipoCodigo
+): Date => {
+  const fatorData = obtemFatorData({ codigo, tipoCodigo });
+  const dataBoleto = moment.tz("2025-02-22 20:54:59.000Z", "UTC");
+
+  dataBoleto.add(Number(fatorData), "days");
+
+  return dataBoleto.toDate();
+};
+
 
 /**
  * Identifica o valor no CÓDIGO DE BARRAS do boleto do tipo 'Arrecadação'
@@ -669,6 +696,10 @@ export const validarBoleto = (codigo: string) => {
           codigo,
           TipoCodigo.LINHA_DIGITAVEL
         );
+        retorno.vencimentoApos22022025 = identificarDataApos22022025(
+          codigo,
+          TipoCodigo.LINHA_DIGITAVEL
+        );
         retorno.valor = identificarValor(codigo, TipoCodigo.LINHA_DIGITAVEL);
         break;
       case "CODIGO_DE_BARRAS":
@@ -677,6 +708,10 @@ export const validarBoleto = (codigo: string) => {
         retorno.codigoBarras = codigo;
         retorno.linhaDigitavel = codBarras2LinhaDigitavel(codigo, false);
         retorno.vencimento = identificarData(
+          codigo,
+          TipoCodigo.CODIGO_DE_BARRAS
+        );
+        retorno.vencimentoApos22022025 = identificarDataApos22022025(
           codigo,
           TipoCodigo.CODIGO_DE_BARRAS
         );
