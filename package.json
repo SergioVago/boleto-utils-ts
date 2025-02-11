@@ -1,6 +1,6 @@
 {
   "name": "boleto-utils-ts",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Biblioteca com funções úteis para a validação de todos os tipos de boleto",
   "main": "./dist/boleto-utils.js",
   "types": "./dist/boleto-utils.d.ts",
@@ -24,7 +24,9 @@
     "digitavel",
     "javascript",
     "typescript",
-    "boletos-ts"
+    "boletos-ts",
+    "boleto-utils",
+    "boleto-utils-ts"
   ],
   "author": {
     "name": "Marcelo Gomes + Weslley Rocha + Sergio Vago"
