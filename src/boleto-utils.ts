@@ -182,7 +182,7 @@ export const identificarDataApos22022025 = (
   const fatorData = obtemFatorData({ codigo, tipoCodigo });
   const dataBoleto = moment.tz("2025-02-22 20:54:59.000Z", "UTC");
 
-  dataBoleto.add(Number(fatorData), "days");
+  dataBoleto.add(Number(fatorData) - 1000, "days");
 
   return dataBoleto.toDate();
 };
