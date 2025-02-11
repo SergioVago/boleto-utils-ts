@@ -128,7 +128,7 @@ type obtemFatorDataParams = {
   tipoCodigo: TipoCodigo
 }
 
-export const obtemFatorData = ({  codigo, tipoCodigo }: obtemFatorDataParams) => {
+export const obtemFatorData = ({ codigo, tipoCodigo }: obtemFatorDataParams) => {
   const codigoLimpo = codigo.replace(/[^0-9]/g, "");
   const tipoBoleto = identificarTipoBoleto(codigoLimpo);
 
