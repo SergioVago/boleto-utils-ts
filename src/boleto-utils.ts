@@ -46,9 +46,10 @@ export enum TipoBoleto {
 export const identificarTipoBoleto = (codigo: string) => {
   codigo = codigo.replace(/[^0-9]/g, "");
 
-  if (typeof codigo !== "string")
+  if (typeof codigo !== "string") {  
     throw new TypeError("Insira uma string válida!");
-
+  }
+  
   if (
     codigo.substr(-14) == "00000000000000" ||
     codigo.substr(5, 14) == "00000000000000"
