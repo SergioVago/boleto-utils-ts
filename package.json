@@ -1,9 +1,12 @@
 {
   "name": "boleto-utils-ts",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Biblioteca com funções úteis para a validação de todos os tipos de boleto",
   "main": "./dist/boleto-utils.js",
   "types": "./dist/boleto-utils.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "jest",
     "build": "tsup"
