@@ -175,8 +175,9 @@ export const identificarData = (
 
 /**
  * Identifica o fator da data de vencimento do boleto após 22/02/2025
+ * O novo fator já tem seu início em 1000, logo fator 1000 representa 22/05/2025
  */
-export const identificarDataApos22022025 = (
+export const identificarDataComNovoFator2025 = (
   codigo: string,
   tipoCodigo: TipoCodigo
 ): Date => {
@@ -697,7 +698,7 @@ export const validarBoleto = (codigo: string) => {
           codigo,
           TipoCodigo.LINHA_DIGITAVEL
         );
-        retorno.vencimentoApos22022025 = identificarDataApos22022025(
+        retorno.vencimentoComNovoFator2025 = identificarDataComNovoFator2025(
           codigo,
           TipoCodigo.LINHA_DIGITAVEL
         );
@@ -712,7 +713,7 @@ export const validarBoleto = (codigo: string) => {
           codigo,
           TipoCodigo.CODIGO_DE_BARRAS
         );
-        retorno.vencimentoApos22022025 = identificarDataApos22022025(
+        retorno.vencimentoComNovoFator2025 = identificarDataComNovoFator2025(
           codigo,
           TipoCodigo.CODIGO_DE_BARRAS
         );
